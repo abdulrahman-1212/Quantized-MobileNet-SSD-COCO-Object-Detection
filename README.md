@@ -177,19 +177,3 @@ cv2.imwrite('output.jpg', annotated)
 ```bash
 python benchmark.py
 ```
-
----
-
-## Tips for Better mAP
-
-1. **Use pretrained backbone**: Once pytorch.org is reachable, set `pretrained=True`
-   in `MobileNetV2SSD.__init__` (swap `mobilenet_v2(weights=None)` → `MobileNet_V2_Weights.DEFAULT`).
-   This alone adds +5–8 mAP points.
-
-2. **Data augmentation**: Add random crops, horizontal flips, color jitter in `COCODetectionDataset.__getitem__`.
-
-3. **QAT over PTQ**: For INT8 with minimal accuracy loss, use `--quant-mode qat`.
-
-4. **FP16 on GPU**: Skip quantization and use `torch.autocast('cuda', dtype=torch.float16)` for GPU deployment — typically faster than INT8 CPU.
-
-5. **Longer training**: 50–100 epochs on full COCO with a pretrained backbone typically reaches 18–22 mAP.
